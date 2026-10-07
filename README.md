@@ -34,7 +34,14 @@ Browsers only allow extensions from outside the Chrome Web Store to be added by 
 2. Open `chrome://extensions` and turn on **Developer mode**.
 3. Click **Load unpacked** and pick the repo folder.
 
-To build the release zips (`dist/`), run `python scripts/build.py`.
+To build the release zips (`dist/`) locally, run `python scripts/build.py`.
+
+### Releasing
+
+1. Bump `"version"` in `manifest.json` and commit it.
+2. Tag and push: `git tag v0.2.0 && git push origin main v0.2.0`.
+
+GitHub Actions then builds both zips and publishes the release. The tag must match the manifest version, or the release is refused.
 
 To try it on the bundled demo page from disk, enable **Allow access to file URLs** on the extension's details page, or serve the repo locally:
 

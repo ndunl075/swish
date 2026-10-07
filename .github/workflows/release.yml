@@ -1,0 +1,41 @@
+# Publishes a GitHub release with the installer bundle and the bare
+# extension zip whenever a version tag (v1.2.3) is pushed.
+name: Release
+
+on:
+  push:
+    tags: ['v*']
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Check tag matches manifest version
+        run: |
+          version=$(python -c "import json; print(json.load(open('manifest.json'))['version'])")
+          if [ "v$version" != "$GITHUB_REF_NAME" ]; then
+            echo "::error::Tag $GITHUB_REF_NAME doesn't match manifest.json version $version. Bump the version in manifest.json first."
+            exit 1
+          fi
+          echo "VERSION=$version" >> "$GITHUB_ENV"
+
+      - name: Build zips
+        run: python scripts/build.py
+
+      - name: Publish release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          sed "s/{{version}}/$VERSION/g" .github/release-notes.md > notes.md
+          gh release create "$GITHUB_REF_NAME" \
+            "dist/swish-v$VERSION.zip" "dist/swish-v$VERSION-extension.zip" \
+            --title "Swish v$VERSION" --notes-file notes.md --generate-notes
