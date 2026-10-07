@@ -1,0 +1,25 @@
+:root { color-scheme: light dark; --fg: #0f172a; --muted: #64748b; --bg: #fff; --line: #e2e8f0; --accent: #4f46e5; }
+@media (prefers-color-scheme: dark) {
+  :root { --fg: #e2e8f0; --muted: #94a3b8; --bg: #0f172a; --line: #1e293b; --accent: #818cf8; }
+}
+body {
+  width: 220px; margin: 0; padding: 14px 16px 16px;
+  font: 13px/1.4 ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+  color: var(--fg); background: var(--bg);
+}
+header { display: flex; align-items: center; gap: 8px; }
+h1 { font-size: 16px; margin: 0; }
+.count { margin: 12px 0 8px; display: flex; align-items: baseline; gap: 6px; }
+.count strong { font-size: 28px; color: var(--accent); font-variant-numeric: tabular-nums; }
+.count span { color: var(--muted); }
+.row {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 8px 0; border-top: 1px solid var(--line); cursor: pointer;
+}
+.row input { accent-color: var(--accent); width: 16px; height: 16px; margin: 0; }
+button {
+  margin-top: 10px; width: 100%; padding: 6px; border-radius: 6px;
+  border: 1px solid var(--line); background: transparent; color: var(--muted);
+  font: inherit; cursor: pointer;
+}
+button:hover { color: var(--fg); }
